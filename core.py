@@ -40,10 +40,14 @@ class Config:
   def parse_metadata(metadata):
     pass
 
+
 def load():
   cron = CronTab(user=True)
   for job in cron:
-    if re.match("^tool=YABM", job.comment):
+    """We just want to handle jobs managed by YABM. This
+       can be told by the tool=YABM key-value pair"""
+    if re.match("(^|.+,)(tool=YABM)($|,.+)", job.comment):
+      #job.enabled(not job.is_enabled())
       print str(job) + " Enabled = " + str(job.is_enabled())
 
 def save():
