@@ -24,27 +24,39 @@ class ConfigSchedule:
 
 class Config:
   """Represents an YABM Configuration"""
-  def __init__(self, metadata):
+  def __init__(self, metadata, schedule, command, active):
+    # Metadata fields
     self.id = None
     self.name = None
     self.type = ConfigType.LOCAL
-    self.source = None
-    self.destination = None
-    self.schedule = None
-    self.active = False
     self.mode = ConfigMode.SIMPLE
+    self.active = active
+    
+    # Schedule fields
+    self.schedule = None
+    
+    # Command members
     self.command = "rsync"
     self.command_options = "-a" 
-    
-    self.parse_metadata(metadata)
+    self.source = None
+    self.destination = None
 
+    # Properly init Config based on supplied information    
+    self.parse_metadata(metadata)
+    self.parse_schedule(schedule)
+    self.parse_command(command)
+    print "Active ", self.active
   @staticmethod
   def is_yabm_job(metadata):
     # Jobs containing tool=YABM are managed by YABM
     return re.match("(^|.+,)(tool=YABM)($|,.+)", metadata)
-
+  
   def parse_metadata(self, metadata):
-    print "Parsing " + metadata
+    print "Parsing metadata - " + metadata
+  def parse_schedule(self, schedule):
+    print "Parsing schedule - " + schedule
+  def parse_command(self, command):
+    print "Parsing command - " + command
 
 class YABM:
   """Interface to the functionalities of YABM"""
@@ -57,12 +69,9 @@ class YABM:
       # Only the jobs managed by YABM should be loaded
       metadata = job.comment
       if Config.is_yabm_job(metadata):
-        config = Config(metadata)
-        
-
-        #job.enabled(not job.is_enabled())
-        print str(job) + " Enabled = " + str(job.is_enabled())
-  def save(selft):
+        config = Config(metadata, "* * * * * (fake schedule)", job.command, job.is_enabled())
+  
+  def save(self):
     pass
 
   def execute(self):
