@@ -64,6 +64,7 @@ class YABM:
   def __init__(self):
     self.cron = CronTab(user=True)
     self.configs = []
+
   def load(self):
     # Load all Configs managed by YABM
     for job in self.cron:
@@ -71,7 +72,7 @@ class YABM:
       metadata = job.comment
       if Config.is_yabm_job(metadata):
         config = Config(metadata, "* * * * * (fake schedule)", job.command, job.is_enabled())
-  
+
   def save(self):
     pass
 
