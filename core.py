@@ -37,7 +37,12 @@ class Config:
     self.command_options = "-a" 
     
     self.parse_metadata(metadata)
-  
+
+  @staticmethod
+  def is_yabm_job(metadata):
+    # Jobs containing tool=YABM are managed by YABM
+    return re.match("(^|.+,)(tool=YABM)($|,.+)", metadata)
+
   def parse_metadata(self, metadata):
     print "Parsing " + metadata
 
@@ -51,7 +56,7 @@ class YABM:
     for job in self.cron:
       # Only the jobs managed by YABM should be loaded
       metadata = job.comment
-      if re.match("(^|.+,)(tool=YABM)($|,.+)", metadata):
+      if Config.is_yabm_job(metadata):
         config = Config(metadata)
         
 
