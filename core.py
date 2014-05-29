@@ -19,13 +19,12 @@ class ConfigSchedule:
     self.dom = None
     self.month = None
     self.dow = None
-  
-  def parse_schedule(schedule):
+  def parse_schedule(self, chedule):
     pass
 
 class Config:
   """Represents an YABM Configuration"""
-  def __init__(self):
+  def __init__(self, metadata):
     self.id = None
     self.name = None
     self.type = ConfigType.LOCAL
@@ -36,9 +35,11 @@ class Config:
     self.mode = ConfigMode.SIMPLE
     self.command = "rsync"
     self.command_options = "-a" 
-
-  def parse_metadata(metadata):
-    pass
+    
+    self.parse_metadata(metadata)
+  
+  def parse_metadata(self, metadata):
+    print "Parsing " + metadata
 
 class YABM:
   """Interface to the functionalities of YABM"""
@@ -46,11 +47,14 @@ class YABM:
     self.cron = CronTab(user=True)
     self.configs = []
   def load(self):
-    """Load all Configs managed by YABM"""
+    # Load all Configs managed by YABM
     for job in self.cron:
-      """We just want to handle jobs managed by YABM. This
-         can be told by the tool=YABM key-value pair"""
-      if re.match("(^|.+,)(tool=YABM)($|,.+)", job.comment):
+      # Only the jobs managed by YABM should be loaded
+      metadata = job.comment
+      if re.match("(^|.+,)(tool=YABM)($|,.+)", metadata):
+        config = Config(metadata)
+        
+
         #job.enabled(not job.is_enabled())
         print str(job) + " Enabled = " + str(job.is_enabled())
   def save(selft):
