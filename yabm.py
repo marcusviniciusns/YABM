@@ -1,11 +1,13 @@
 #!/usr/bin/python
 
-import core
+from core import YABM
 import gui
 
-core.load()
-core.save() 
-core.execute()
+yabm = YABM()
+
+yabm.load()
+yabm.save() 
+yabm.execute()
 
 # Glue functions will go here
 
