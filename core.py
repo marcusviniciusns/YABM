@@ -13,14 +13,17 @@ class ConfigMode:
 
 class ConfigSchedule:
   """Holds the Configuration Schedule"""
-  def __init__(self):
+  def __init__(self, schedule):
     self.minute = None
     self.hour = None
     self.dom = None
     self.month = None
     self.dow = None
-  def parse_schedule(self, chedule):
-    pass
+
+    self.parse_schedule(schedule)
+
+  def parse_schedule(self, schedule):
+    print "Parsing schedule -", schedule 
 
 class Config:
   """Represents an YABM Configuration"""
@@ -33,7 +36,7 @@ class Config:
     self.active = active
     
     # Schedule fields
-    self.schedule = None
+    self.schedule = ConfigSchedule(schedule) 
     
     # Command members
     self.command = "rsync"
@@ -43,9 +46,9 @@ class Config:
 
     # Properly init Config based on supplied information    
     self.parse_metadata(metadata)
-    self.parse_schedule(schedule)
     self.parse_command(command)
     print "Active ", self.active
+
   @staticmethod
   def is_yabm_job(metadata):
     # Jobs containing tool=YABM are managed by YABM
@@ -53,8 +56,6 @@ class Config:
   
   def parse_metadata(self, metadata):
     print "Parsing metadata - " + metadata
-  def parse_schedule(self, schedule):
-    print "Parsing schedule - " + schedule
   def parse_command(self, command):
     print "Parsing command - " + command
 
