@@ -1,5 +1,5 @@
-from lib.crontab.crontab import CronTab
 import re
+from lib.crontab.crontab import CronTab
 
 class ConfigType:
   """Enum-like class that represents the Configuration Type"""
@@ -43,7 +43,7 @@ class Config:
     self.schedule = None 
 
   @staticmethod
-  def is_yabm_job(metadata):
+  def is_config(metadata):
     # Jobs containing tool=YABM are managed by YABM
     return re.match("(^|.+,)(tool=YABM)($|,.+)", metadata)
   
@@ -64,7 +64,7 @@ class CronManager:
     for job in self.cron:
       # Only the jobs managed by YABM should be loaded
       metadata = job.comment
-      if Config.is_yabm_job(metadata):
+      if Config.is_config(metadata):
         config = Config()
         config.parse_metadata(metadata)
         config.parse_command(job.command)
