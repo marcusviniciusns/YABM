@@ -13,30 +13,25 @@ class ConfigMode:
 
 class ConfigSchedule:
   """Holds the Configuration Schedule"""
-  def __init__(self, schedule):
+  def __init__(self):
     self.minute = None
     self.hour = None
     self.dom = None
     self.month = None
     self.dow = None
 
-    self.parse_schedule(schedule)
-
   def parse_schedule(self, schedule):
     print "Parsing schedule -", schedule 
 
 class Config:
   """Represents an YABM Configuration"""
-  def __init__(self, metadata, schedule, command, active):
+  def __init__(self):
     # Metadata fields
     self.id = None
     self.name = None
     self.type = ConfigType.LOCAL
     self.mode = ConfigMode.SIMPLE
-    self.active = active
-    
-    # Schedule fields
-    self.schedule = ConfigSchedule(schedule) 
+    self.active = None 
     
     # Command members
     self.command = "rsync"
@@ -44,10 +39,8 @@ class Config:
     self.source = None
     self.destination = None
 
-    # Properly init Config based on supplied information    
-    self.parse_metadata(metadata)
-    self.parse_command(command)
-    print "Active ", self.active
+    # Schedule fields
+    self.schedule = None 
 
   @staticmethod
   def is_yabm_job(metadata):
@@ -56,10 +49,11 @@ class Config:
   
   def parse_metadata(self, metadata):
     print "Parsing metadata - " + metadata
+
   def parse_command(self, command):
     print "Parsing command - " + command
 
-class YABM:
+class CronManager:
   """Interface to the functionalities of YABM"""
   def __init__(self):
     self.cron = CronTab(user=True)
@@ -71,8 +65,12 @@ class YABM:
       # Only the jobs managed by YABM should be loaded
       metadata = job.comment
       if Config.is_yabm_job(metadata):
-        config = Config(metadata, "* * * * * (fake schedule)", job.command, job.is_enabled())
-
+        config = Config()
+        config.parse_metadata(metadata)
+        config.parse_command(job.command)
+        config.schedule = ConfigSchedule()
+        config.schedule.parse_schedule("* * * * * (fake schedule 2)")
+ 
   def save(self):
     pass
 

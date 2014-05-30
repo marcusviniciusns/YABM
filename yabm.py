@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
-from core import YABM
+from core import CronManager
 import gui
 
-yabm = YABM()
+cron_manager = CronManager()
 
-yabm.load()
-yabm.save() 
-yabm.execute()
+cron_manager.load()
+cron_manager.save() 
+cron_manager.execute()
 
 # Glue functions will go here
 
