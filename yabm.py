@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from core import CronManager
+from cronmanager import CronManager
 import gui
 
 cron_manager = CronManager()
