@@ -15,11 +15,13 @@ class CronManager:
 
       # Only jobs which are in the Config format should be loaded
       if Config.is_config(metadata):
-        conf = Config()
-        conf.parse_metadata(metadata)
-        conf.parse_command(job.command)
-        conf.schedule = ConfigSchedule()
-        conf.schedule.parse_schedule("* * * * * (fake schedule 2)")
+        config = Config()
+        config.parse_metadata(metadata)
+        config.parse_command(job.command)
+        config.schedule = ConfigSchedule()
+        config.schedule.parse_schedule("* * * * * (fake schedule 2)")
+
+        self.configs.append(config)
  
   def save(self):
     pass

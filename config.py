@@ -20,7 +20,7 @@ class ConfigSchedule:
     self.dow = None
 
   def parse_schedule(self, schedule):
-    print "Parsing schedule -", schedule 
+    pass
 
 class Config:
   """Represents an YABM Configuration"""
@@ -42,13 +42,43 @@ class Config:
     self.schedule = None 
 
   @staticmethod
+  def get_value(key, metadata):
+    pattern = "(^|.*,[ ]*)" + key + "=([^,^ ]*)($|.*)"
+    match = re.match(pattern, metadata)
+
+    if match:
+      return match.groups(1)
+
+    return None
+
+  @staticmethod
   def is_config(metadata):
     # Jobs containing tool=YABM are managed by YABM
-    return re.match("(^|.+,)(tool=YABM)($|,.+)", metadata)
+    value = Config.get_value("tool", metadata)
+    if value == None:
+      return False
+    return value == "YABM"
   
   def parse_metadata(self, metadata):
-    print "Parsing metadata - " + metadata
+    self.id = Config.get_value("id", metadata)
+    self.name = Config.get_value("name", metadata)
+
+    type = Config.get_value("type", metadata)
+    if type == "local":
+      self.type = ConfigType.LOCAL
+    elif type == "remote":
+      self.type = ConfigType.REMOTE
+
+    mode = Config.get_value("mode")
+    if mode == "simple":
+      self.type = ConfigMode.SIMPLE
+    elif type == "expert":
+      self.type = ConfigMode.EXPERT
 
   def parse_command(self, command):
-    print "Parsing command - " + command
-
+    pattern = "rsync[ ]+(.*)[ ]+([^ ]+)[ ]+([^ ]+)$"    
+    m = re.match(pattern, command)
+    if not m == None:
+      self.command_options = m.groups(0)
+      self.source = m.groups(1)
+      self.destination = m.groups(2)
