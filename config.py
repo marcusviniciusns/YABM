@@ -22,12 +22,16 @@ class ConfigSchedule:
   def parse_schedule(self, schedule):
     pass
 
+  def serialize(self):
+    return str(self)
+
   def __str__(self):
     ret  = str(self.minute) + " "
     ret += str(self.hour) + " "
     ret += str(self.dom) + " "
     ret += str(self.month) + " "
     ret += str(self.dow) 
+    return ret
 
 class Config:
   """Represents an YABM Configuration"""
@@ -48,6 +52,7 @@ class Config:
     # Schedule fields
     self.schedule = None 
 
+    # A reference to the cron job
     self.job = None
 
   def __str__(self):
@@ -94,9 +99,28 @@ class Config:
 
     mode = Config.get_value("mode", metadata)
     if mode == "simple":
-      self.type = ConfigMode.SIMPLE
+      self.mode = ConfigMode.SIMPLE
     elif type == "expert":
-      self.type = ConfigMode.EXPERT
+      self.mode = ConfigMode.EXPERT
+
+  def serialize_metadata(self):
+    metadata  = "tool=YABM"
+    metadata += ",id=" + str(self.id)
+    metadata += ",name=" + str(self.name)
+    
+    metadata += ",type="
+    if self.type == ConfigType.LOCAL:
+      metadata += "local"
+    elif self.type == ConfigType.REMOTE:
+      metadata += "remote"
+
+    metadata += ",mode="
+    if self.mode == ConfigMode.SIMPLE:
+      metadata += "simple"
+    elif self.mode == ConfigMode.EXPERT:
+      metadata += "expert"
+
+    return metadata
 
   def parse_command(self, command):
     pattern = "rsync[ ]+(.*)[ ]+([^ ]+)[ ]+([^ ]+)$"    
@@ -105,4 +129,11 @@ class Config:
       self.command_options = m.groups()[0]
       self.source = m.groups()[1]
       self.destination = m.groups()[2]
+
+  def serialize_command(self):
+    command  = "rsync "
+    command += str(self.command_options) + " "
+    command += str(self.source) + " "
+    command += str(self.destination)
+    return command
 
