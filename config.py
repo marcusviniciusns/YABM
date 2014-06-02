@@ -23,7 +23,11 @@ class ConfigSchedule:
     pass
 
   def __str__(self):
-    return "__str__ not implemented"
+    ret  = str(self.minute) + " "
+    ret += str(self.hour) + " "
+    ret += str(self.dom) + " "
+    ret += str(self.month) + " "
+    ret += str(self.dow) 
 
 class Config:
   """Represents an YABM Configuration"""
