@@ -18,15 +18,19 @@ class CronManager:
       # Only jobs which are in the Config format should be loaded
       if Config.is_config(metadata):
         config = Config()
-        config.parse_metadata(metadata)
-        config.parse_command(job.command)
-        config.schedule = ConfigSchedule()
-        config.schedule.parse_schedule("* * * * * (fake schedule 2)")
+        config.load(job.command, metadata, job.is_enabled())
+        config.schedule = ConfigSchedule(job.minute, job.hour, job.dom, job.month, job.dow)
         config.job = job 
         self.configs.append(config)
  
   def save(self, config):
-    pass
+    if config.job == None:
+      config.job = self.cron.new()
+    config.job.command = config.serialize_command()
+    config.job.comment = config.serialize_metadata()
+    config.job.enable(config.active)
+    config.job.setall(config.schedule.serialize())
+    self.cron.write() 
 
   def execute(self):
     pass

@@ -12,15 +12,12 @@ class ConfigMode:
 
 class ConfigSchedule:
   """Holds the Configuration Schedule"""
-  def __init__(self):
-    self.minute = None
-    self.hour = None
-    self.dom = None
-    self.month = None
-    self.dow = None
-
-  def parse_schedule(self, schedule):
-    pass
+  def __init__(self, minute, hour, dom, month, dow):
+    self.minute = minute
+    self.hour = hour 
+    self.dom = dom 
+    self.month = month 
+    self.dow = dow 
 
   def serialize(self):
     return str(self)
@@ -86,6 +83,12 @@ class Config:
     if value == None:
       return False
     return value == "YABM"
+
+  def load(self, command, metadata, enabled):
+    self.parse_command(command)
+    self.parse_metadata(metadata)
+    self.active = enabled
+    
   
   def parse_metadata(self, metadata):
     self.id = Config.get_value("id", metadata)
