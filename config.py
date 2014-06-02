@@ -22,6 +22,9 @@ class ConfigSchedule:
   def parse_schedule(self, schedule):
     pass
 
+  def __str__(self):
+    return "__str__ not implemented"
+
 class Config:
   """Represents an YABM Configuration"""
   def __init__(self):
@@ -41,13 +44,29 @@ class Config:
     # Schedule fields
     self.schedule = None 
 
+    self.job = None
+
+  def __str__(self):
+    ret  = "id.............: " + str(self.id) + "\n"
+    ret += "name...........: " + str(self.name) + "\n"
+    ret += "type...........: " + str(self.type) + "\n"
+    ret += "mode...........: " + str(self.mode) + "\n"
+    ret += "active.........: " + str(self.active) + "\n"
+    ret += "command........: " + str(self.command) + "\n"
+    ret += "command_options: " + str(self.command_options) + "\n"
+    ret += "source.........: " + str(self.source) + "\n"
+    ret += "destination....: " + str(self.destination) + "\n"
+    ret += "schedule.......: " + str(self.schedule) + "\n"
+    ret += "job............: " + str(self.job)
+    return ret
+
   @staticmethod
   def get_value(key, metadata):
     pattern = "(^|.*,[ ]*)" + key + "=([^,^ ]*)($|.*)"
     match = re.match(pattern, metadata)
-
+    
     if match:
-      return match.groups(1)
+      return match.groups()[1]
 
     return None
 
@@ -69,7 +88,7 @@ class Config:
     elif type == "remote":
       self.type = ConfigType.REMOTE
 
-    mode = Config.get_value("mode")
+    mode = Config.get_value("mode", metadata)
     if mode == "simple":
       self.type = ConfigMode.SIMPLE
     elif type == "expert":
@@ -79,6 +98,7 @@ class Config:
     pattern = "rsync[ ]+(.*)[ ]+([^ ]+)[ ]+([^ ]+)$"    
     m = re.match(pattern, command)
     if not m == None:
-      self.command_options = m.groups(0)
-      self.source = m.groups(1)
-      self.destination = m.groups(2)
+      self.command_options = m.groups()[0]
+      self.source = m.groups()[1]
+      self.destination = m.groups()[2]
+
