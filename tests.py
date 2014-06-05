@@ -78,7 +78,7 @@ def test_04():
   cm.save(config)
   assert config.is_valid()
   config.execute()
-
+  cm.remove(config)
 
 print "running test_00"
 test_00()
