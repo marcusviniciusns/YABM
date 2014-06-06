@@ -1,9 +1,7 @@
 #!/usr/bin/python
 
-from cronmanager import CronManager
-import gui
+from gui import MainWindow
 
-cm = CronManager()
+main_window = MainWindow() 
 
-# Glue functions will go here
 

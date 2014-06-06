@@ -80,6 +80,12 @@ def test_04():
   config.execute()
   cm.remove(config)
 
+def test_05():
+  cm = CronManager()
+  for i in range(10):
+    cm.save(gen_config())
+
+
 print "running test_00"
 test_00()
 
@@ -94,6 +100,9 @@ test_03()
 
 print "running test_04"
 test_04()
+
+print "running test_05"
+test_05()
 
 print "done running tests"
 
