@@ -3,8 +3,8 @@
 from cronmanager import CronManager
 from config import Config 
 
-metadata = "tool=YABM,name=My First Job,type=0,mode=0"
-command = "rsync -a /home/dummy1/ /home/dummy2/"
+metadata = "tool=YABM,name=This Is Just A Backup,type=0,mode=0"
+command = "rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/"
 schedule = "* * * * *"
 
 def gen_config():
@@ -16,6 +16,10 @@ def assert_config(config):
   assert config.serialize() == metadata
   assert config.command.serialize() == command
   assert config.schedule.serialize() == schedule  
+
+def cleanup():
+  cm = CronManager()
+  cm.remove_all()
 
 def test_00():
   config = gen_config()
@@ -85,6 +89,8 @@ def test_05():
   for i in range(10):
     cm.save(gen_config())
 
+print "starting clean.."
+cleanup()
 
 print "running test_00"
 test_00()

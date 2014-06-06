@@ -37,11 +37,28 @@ class MainWindow:
   
   def load_configs(self):
     self.lbConfigs.delete(0, END)
-    self.lbConfigs.insert(END, "Name        | Active")
+
+    header  = self.format("Name", 12) + "|"
+    header += self.format("Active", 6) + "|"
+    header += self.format("Source", 20) + "|"
+    header += self.format("Destination", 20) 
+
+    self.lbConfigs.insert(END, header)
     
     self.cm.load_all()
     for config in self.cm.configs:
-      self.lbConfigs.insert(END, config.name)
+      row  = self.format(str(config.name), 12) + "|"
+      row += self.format(str(config.enabled), 6) + "|"
+      row += self.format(str(config.command.source), 20) + "|"
+      row += self.format(str(config.command.destination), 20)
+      self.lbConfigs.insert(END, row) 
+
+  def format(self, str, size):
+    if len(str) < size:
+      return str + (" " * (size - len(str)))
+    if len(str) == size:
+      return str 
+    return str[:size-3] + "..."
 
 
 def test(*args):
