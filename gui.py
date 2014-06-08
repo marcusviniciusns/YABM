@@ -2,6 +2,7 @@
 
 from Tkinter import *
 from cronmanager import *
+from tkFileDialog import askdirectory
 
 class MainWindow:
   def __init__(self):
@@ -89,8 +90,6 @@ class ConfigWindow:
     # Frames
     frmTop = Frame(configWindow)
     frmTop.grid(row=0, column=0, padx=2, pady=2, sticky=N+S+E+W)
-    frmMid = Frame(configWindow)
-    frmMid.grid(row=1, column=0, padx=2, pady=2, sticky=N+S+E+W)
     frmBot = Frame(configWindow)
     frmBot.grid(row=2, column=0, padx=2, pady=2, sticky=N+S+E+W)
 
@@ -98,7 +97,7 @@ class ConfigWindow:
     lblName = Label(frmTop, width=12, text="Name")
     lblName.grid(row=0, column=0, sticky=W)
     entName = Entry(frmTop, width=40)
-    entName.grid(row=0, column=1, sticky=W)
+    entName.grid(row=0, column=1, columnspan=2, sticky=W)
 
     # Type widgets
     lblType = Label(frmTop, width=12, text="Type")
@@ -107,31 +106,41 @@ class ConfigWindow:
     # Source widgets
     lblSource = Label(frmTop, width=12, text="Source")
     lblSource.grid(row=2, column=0, sticky=W)
-    entSource = Entry(frmTop, width=35)
-    entSource.grid(row=2, column=1, sticky=W)
+    self.entSource = Entry(frmTop, width=35)
+    self.entSource.grid(row=2, column=1, sticky=W)
+    btnSourceLoad = Button(frmTop, text="...", command=self.select_source)
+    btnSourceLoad.grid(row=2, column=2, sticky=W)
 
     # Destination widgets
     lblDestination = Label(frmTop, width=12, text="Destination")
     lblDestination.grid(row=3, column=0, sticky=W)
-    entDestination = Entry(frmTop, width=35)
-    entDestination.grid(row=3, column=1, sticky=W)
+    self.entDestination = Entry(frmTop, width=35)
+    self.entDestination.grid(row=3, column=1, sticky=W)
+    btnDestinationLoad = Button(frmTop, text="...", command=self.select_destination)
+    btnDestinationLoad.grid(row=3, column=2, sticky=W)
 
     # User widgets
-    lblUser = Label(frmMid, width=12, text="User")
+    lblUser = Label(frmTop, width=12, text="User")
     lblUser.grid(row=4, column=0, sticky=W)
-    entUser = Entry(frmMid)
+    entUser = Entry(frmTop)
     entUser.grid(row=4, column=1, sticky=W)
 
     # Password widgets
-    lblPass = Label(frmMid, width=12, text="Password")
+    lblPass = Label(frmTop, width=12, text="Password")
     lblPass.grid(row=5, column=0, sticky=W)
-    entPass = Entry(frmMid)
+    entPass = Entry(frmTop)
     entPass.grid(row=5, column=1, sticky=W)
 
-    lblFrmOpt = LabelFrame(frmMid, text="Options")
-    lblFrmOpt.grid(row=4, column=2, sticky=W)
+    # Options Frame
+    lblFrmOpt = LabelFrame(frmTop, text="Options")
+    lblFrmOpt.grid(row=4, column=2, rowspan=2, sticky=N+S+E+W)
+
     lblStatus = Label(lblFrmOpt, text="Status")
     lblStatus.grid(row=0, column=0, sticky=W)
+    self.active = IntVar()
+    chkStatus = Checkbutton(lblFrmOpt, text="Active", variable=self.active)
+    chkStatus.grid(row=0, column=1, sticky=W)
+
 
     # Buttons
     btnDelete = Button(frmBot, text="Delete", command=self.delete)
@@ -141,6 +150,19 @@ class ConfigWindow:
     btnExecute = Button(frmBot, text="Execute", command=self.execute)
     btnExecute.grid(row=0, column=2, sticky=N+S+E)
 
+  def select_source(self):
+    self.select_directory(self.entSource)
+
+  def select_destination(self):
+    self.select_directory(self.entDestination)
+
+  def select_directory(self, entry):
+    path = askdirectory()
+    if path == None or path == "":
+      return
+    entry.delete(0, END)
+    entry.insert(0, path)
+
   def delete(self):
     print "Delete clicked"
 
@@ -148,7 +170,7 @@ class ConfigWindow:
     print "Save clicked"
 
   def execute(self):
-    print "Execute clicked"   
+    print askdirectory()   
 
 
 class InfoDialog:
