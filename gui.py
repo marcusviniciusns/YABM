@@ -89,45 +89,66 @@ class ConfigWindow:
     # Frames
     frmTop = Frame(configWindow)
     frmTop.grid(row=0, column=0, padx=2, pady=2, sticky=N+S+E+W)
-    frmBottom = Frame(configWindow)
-    frmBottom.grid(row=1, column=0, padx=2, pady=2, sticky=E)
+    frmMid = Frame(configWindow)
+    frmMid.grid(row=1, column=0, padx=2, pady=2, sticky=N+S+E+W)
+    frmBot = Frame(configWindow)
+    frmBot.grid(row=2, column=0, padx=2, pady=2, sticky=N+S+E+W)
 
     # Name widgets
-    lblName = Label(frmTop, text="Name")
+    lblName = Label(frmTop, width=12, text="Name")
     lblName.grid(row=0, column=0, sticky=W)
-    entName = Entry(frmTop)
-    entName.grid(row=0, column=1, columnspan=2, sticky=W)
+    entName = Entry(frmTop, width=40)
+    entName.grid(row=0, column=1, sticky=W)
 
-    # Label widgets
-    lblType = Label(frmTop, text="Type")
+    # Type widgets
+    lblType = Label(frmTop, width=12, text="Type")
     lblType.grid(row=1, column=0, sticky=W)
 
     # Source widgets
-    lblSource = Label(frmTop, text="Source")
+    lblSource = Label(frmTop, width=12, text="Source")
     lblSource.grid(row=2, column=0, sticky=W)
-    entSource = Entry(frmTop)
-    entSource.grid(row=2, column=1, columnspan=2, sticky=W)
+    entSource = Entry(frmTop, width=35)
+    entSource.grid(row=2, column=1, sticky=W)
 
     # Destination widgets
-    lblDestination = Label(frmTop, text="Destination")
+    lblDestination = Label(frmTop, width=12, text="Destination")
     lblDestination.grid(row=3, column=0, sticky=W)
-    entDestination = Entry(frmTop)
-    entDestination.grid(row=3, column=1, columnspan=2, sticky=W)
+    entDestination = Entry(frmTop, width=35)
+    entDestination.grid(row=3, column=1, sticky=W)
 
     # User widgets
-    lblUser = Label(frmTop, text="User")
+    lblUser = Label(frmMid, width=12, text="User")
     lblUser.grid(row=4, column=0, sticky=W)
-    entUser = Entry(frmTop)
-    entUser.grid(row=4, column=1, columnspan=2, sticky=W)
+    entUser = Entry(frmMid)
+    entUser.grid(row=4, column=1, sticky=W)
 
-    # Dummy widgets
-    lbl1 = Label(frmTop, text="Label1")
-    lbl1.grid(row=10, column=0, sticky=W)
-    lbl2 = Label(frmTop, text="Label1")
-    lbl2.grid(row=10, column=1, sticky=W)
-    lbl3 = Label(frmTop, text="Label1")
-    lbl3.grid(row=10, column=2, sticky=W)
+    # Password widgets
+    lblPass = Label(frmMid, width=12, text="Password")
+    lblPass.grid(row=5, column=0, sticky=W)
+    entPass = Entry(frmMid)
+    entPass.grid(row=5, column=1, sticky=W)
 
+    lblFrmOpt = LabelFrame(frmMid, text="Options")
+    lblFrmOpt.grid(row=4, column=2, sticky=W)
+    lblStatus = Label(lblFrmOpt, text="Status")
+    lblStatus.grid(row=0, column=0, sticky=W)
+
+    # Buttons
+    btnDelete = Button(frmBot, text="Delete", command=self.delete)
+    btnDelete.grid(row=0, column=0, sticky=N+S+W)
+    btnSave = Button(frmBot, text="Save", command=self.save)
+    btnSave.grid(row=0, column=1, sticky=N+S+E)
+    btnExecute = Button(frmBot, text="Execute", command=self.execute)
+    btnExecute.grid(row=0, column=2, sticky=N+S+E)
+
+  def delete(self):
+    print "Delete clicked"
+
+  def save(self):
+    print "Save clicked"
+
+  def execute(self):
+    print "Execute clicked"   
 
 
 class InfoDialog:
@@ -135,14 +156,14 @@ class InfoDialog:
     self.dialog = Toplevel(parent)
 
     frmTop = Frame(self.dialog)
-    frmTop.grid(row=0, column=0, padx=10, pady=10, sticky=N+S+E+W)
+    frmTop.grid(row=0, column=0, padx=5, pady=10, sticky=N+S+E+W)
     frmBottom = Frame(self.dialog)
-    frmBottom.grid(row=1, column=0, padx=10, pady=10, sticky=N+S+E+W)
+    frmBottom.grid(row=1, column=0, padx=5, pady=10, sticky=N+S)
 
     lblInfo = Label(frmTop, text=info)
     lblInfo.grid(row=0, column=0)
     btnOk = Button(frmBottom, text="OK", command=self.ok)
-    btnOk.grid(row=1, column=0)
+    btnOk.grid(row=0, column=0)
 
   def ok(self):
     self.dialog.destroy()
