@@ -1,0 +1,10 @@
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0
+* * * * * rsync -a /home/path/to/dummy/dir1/ /home/path/to/dummy/dir2/ # tool=YABM,name=This Is Just A Backup,type=0,mode=0

@@ -5,6 +5,15 @@ class ConfigType:
   """Enum-like class that represents the Configuration Type"""
   LOCAL = 0
   REMOTE = 1
+  
+  @staticmethod
+  def name(type):
+    if ConfigType.LOCAL == type:
+      return "local"
+    elif ConfigType.REMOTE == type:
+      return "remote"
+    else:
+      return "unknown"
 
 class ConfigMode:
   """Enum-like class that represents the Configuration Mode"""
