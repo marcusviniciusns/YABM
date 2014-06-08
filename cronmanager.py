@@ -3,8 +3,12 @@ from config import *
 
 class CronManager:
   """Cron Manager"""
-  def __init__(self):
-    self.cron = CronTab(user=True)
+  def __init__(self, dry_run=True):
+    if dry_run:
+      self.cron = CronTab(tabfile='fake.tab')
+    else:
+      self.cron = CronTab(user=True)
+
     self.configs = None
     self.load_all()
 
