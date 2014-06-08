@@ -23,11 +23,11 @@ class ConfigMode:
 class ConfigSchedule:
   """Holds the Configuration Schedule"""
   def __init__(self):
-    self.minute = None
-    self.hour = None
-    self.dom = None
-    self.month = None
-    self.dow = None
+    self.minute = ""
+    self.hour = ""
+    self.dom = ""
+    self.month = ""
+    self.dow = ""
 
   def __str__(self):
     return self.serialize() 
@@ -53,9 +53,9 @@ class ConfigSchedule:
 class ConfigCommand:
   """Represents a rsync command"""
   def __init__(self):
-    self.options = None
-    self.source = None
-    self.destination = None
+    self.options = "-a"
+    self.source = ""
+    self.destination = ""
 
   def __str__(self):
     return self.serialize()
@@ -78,17 +78,17 @@ class ConfigCommand:
 class Config:
   """Represents an YABM Configuration"""
   def __init__(self):
-    # Metadata fields
-    self.name = None
-    self.type = None
-    self.mode = None
-    self.enabled = True
-    
     # Command, schedule and a reference to the cron job
     self.command = ConfigCommand() 
     self.schedule = ConfigSchedule()
     self.job = None
 
+    # Metadata fields
+    self.name = "New Configuration"
+    self.type = ConfigType.LOCAL 
+    self.mode = ConfigMode.SIMPLE 
+    self.enabled = True
+ 
   def __str__(self):
     ret  = "name......: " + str(self.name) + "\n"
     ret += "type......: " + str(self.type) + "\n"
@@ -114,6 +114,7 @@ class Config:
     self.schedule.deserialize(schedule)
 
   def is_valid(self):
+    self.serialize()
     if self.job == None:
       return False
     return self.job.is_valid()
@@ -121,6 +122,8 @@ class Config:
   def execute(self):
     if self.is_valid():
       os.system(self.job.command)
+      return True
+    return False
 
   @staticmethod
   def is_config(metadata):

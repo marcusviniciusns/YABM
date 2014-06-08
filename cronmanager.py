@@ -51,7 +51,7 @@ class CronManager:
 
   def remove(self, config):
     if config == None:
-      return
+      return False
 
     if not config.job == None:
       self.cron.remove(config.job)
@@ -60,6 +60,9 @@ class CronManager:
    
     if config in self.configs: 
       self.configs.remove(config)
+
+    return True
+
 
   def remove_all(self):
     self.load_all()
