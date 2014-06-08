@@ -77,6 +77,14 @@ class MainWindow:
 class ConfigWindow:
   def __init__(self, parent, config):
 
+    self.name = StringVar()
+
+    self.minute = StringVar()
+    self.hour = StringVar()
+    self.dom = StringVar()
+    self.month = StringVar()
+    self.dow = StringVar()
+
     title = ""
     if config == None:
       title = "New Configuration"
@@ -91,56 +99,78 @@ class ConfigWindow:
     frmTop = Frame(configWindow)
     frmTop.grid(row=0, column=0, padx=2, pady=2, sticky=N+S+E+W)
     frmBot = Frame(configWindow)
-    frmBot.grid(row=2, column=0, padx=2, pady=2, sticky=N+S+E+W)
+    frmBot.grid(row=1, column=0, padx=2, pady=2, sticky=N+S+E+W)
 
     # Name widgets
-    lblName = Label(frmTop, width=12, text="Name")
-    lblName.grid(row=0, column=0, sticky=W)
-    entName = Entry(frmTop, width=40)
-    entName.grid(row=0, column=1, columnspan=2, sticky=W)
+    Label(frmTop, width=12, text="Name").grid(row=0, column=0, sticky=W)
+    Entry(frmTop, width=40, textvariable=self.name).grid(row=0, column=1, columnspan=3, sticky=W)
 
     # Type widgets
     lblType = Label(frmTop, width=12, text="Type")
     lblType.grid(row=1, column=0, sticky=W)
+    frmType = Frame(frmTop)
+    frmType.grid(row=1, column=1, columnspan=3, sticky=W)
+    self.type_ = IntVar()
+    Radiobutton(frmType, text="Local", variable=self.type_, value=0).grid(row=0, column=0, sticky=W)
+    Radiobutton(frmType, text="Remote (Network)", variable=self.type_, value=1).grid(row=0, column=1, sticky=W)
 
     # Source widgets
     lblSource = Label(frmTop, width=12, text="Source")
     lblSource.grid(row=2, column=0, sticky=W)
     self.entSource = Entry(frmTop, width=35)
-    self.entSource.grid(row=2, column=1, sticky=W)
+    self.entSource.grid(row=2, column=1, columnspan=2, sticky=W)
     btnSourceLoad = Button(frmTop, text="...", command=self.select_source)
-    btnSourceLoad.grid(row=2, column=2, sticky=W)
+    btnSourceLoad.grid(row=2, column=3, sticky=W)
 
     # Destination widgets
     lblDestination = Label(frmTop, width=12, text="Destination")
     lblDestination.grid(row=3, column=0, sticky=W)
     self.entDestination = Entry(frmTop, width=35)
-    self.entDestination.grid(row=3, column=1, sticky=W)
+    self.entDestination.grid(row=3, column=1, columnspan=2, sticky=W)
     btnDestinationLoad = Button(frmTop, text="...", command=self.select_destination)
-    btnDestinationLoad.grid(row=3, column=2, sticky=W)
+    btnDestinationLoad.grid(row=3, column=3, sticky=W)
 
     # User widgets
     lblUser = Label(frmTop, width=12, text="User")
     lblUser.grid(row=4, column=0, sticky=W)
-    entUser = Entry(frmTop)
+    entUser = Entry(frmTop, width=12, state=DISABLED)
     entUser.grid(row=4, column=1, sticky=W)
 
     # Password widgets
     lblPass = Label(frmTop, width=12, text="Password")
     lblPass.grid(row=5, column=0, sticky=W)
-    entPass = Entry(frmTop)
+    entPass = Entry(frmTop, width=12, state=DISABLED)
     entPass.grid(row=5, column=1, sticky=W)
+
+    # Schedule Widgets
+    Label(frmTop, width=12, text="Minute").grid(row=6, column=0, sticky=W)
+    Entry(frmTop, width=6, textvariable=self.minute).grid(row=6, column=1, sticky=W)
+    Label(frmTop, width=12, text="Hour").grid(row=7, column=0, sticky=W)
+    Entry(frmTop, width=6, textvariable=self.hour).grid(row=7, column=1, sticky=W)
+    Label(frmTop, width=12, text="Day of Month").grid(row=8, column=0, sticky=W)
+    Entry(frmTop, width=6, textvariable=self.dom).grid(row=8, column=1, sticky=W)
+    Label(frmTop, width=12, text="Month").grid(row=9, column=0, sticky=W)
+    Entry(frmTop, width=6, textvariable=self.month).grid(row=9, column=1, sticky=W)
+    Label(frmTop, width=12, text="Day of Week").grid(row=10, column=0, sticky=W)
+    Entry(frmTop, width=6, textvariable=self.dow).grid(row=10, column=1, sticky=W)
 
     # Options Frame
     lblFrmOpt = LabelFrame(frmTop, text="Options")
-    lblFrmOpt.grid(row=4, column=2, rowspan=2, sticky=N+S+E+W)
-
+    lblFrmOpt.grid(row=4, column=2, rowspan=4, columnspan=2, sticky=E)
     lblStatus = Label(lblFrmOpt, text="Status")
     lblStatus.grid(row=0, column=0, sticky=W)
     self.active = IntVar()
     chkStatus = Checkbutton(lblFrmOpt, text="Active", variable=self.active)
-    chkStatus.grid(row=0, column=1, sticky=W)
-
+    chkStatus.grid(row=0, column=1, columnspan=2, sticky=W)
+    lblMode = Label(lblFrmOpt, text="Mode")
+    lblMode.grid(row=1, column=0, sticky=W)
+    self.mode = IntVar()
+    Radiobutton(lblFrmOpt, text="Simple", variable=self.mode, value=0).grid(row=1, column=1, sticky=W)
+    Radiobutton(lblFrmOpt, text="Expert", variable=self.mode, value=1).grid(row=1, column=2, sticky=W)
+    self.lblDesc = Label(lblFrmOpt, text="Command line options:")
+    self.lblDesc.grid(row=2, column=0, columnspan=3, sticky=W)
+    self.entCmdOptions = Entry(lblFrmOpt)
+    self.entCmdOptions.grid(row=3, column=0, columnspan=3, sticky=W)
 
     # Buttons
     btnDelete = Button(frmBot, text="Delete", command=self.delete)
