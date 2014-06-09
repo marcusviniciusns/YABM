@@ -20,6 +20,15 @@ class ConfigMode:
   SIMPLE = 0
   EXPERT = 1
 
+  @staticmethod
+  def name(mode):
+    if ConfigMode.SIMPLE == mode:
+      return "simple"
+    elif ConfigMode.EXPERT == mode:
+      return "expert"
+    else:
+      return "unknown"
+
 class ConfigSchedule:
   """Holds the Configuration Schedule"""
   def __init__(self):
@@ -56,6 +65,8 @@ class ConfigCommand:
     self.options = "-a"
     self.source = ""
     self.destination = ""
+    self.user = ""
+    self.host = ""
 
   def __str__(self):
     return self.serialize()
@@ -64,6 +75,11 @@ class ConfigCommand:
     command  = "rsync "
     command += str(self.options) + " "
     command += str(self.source) + " "
+
+    # Remote rsync
+    if not self.user == "" and not self.host == "":
+      command += self.user + "@" + self.host + ":"
+
     command += str(self.destination)
     return command
 
@@ -74,6 +90,14 @@ class ConfigCommand:
       self.options = m.groups()[0]
       self.source = m.groups()[1]
       self.destination = m.groups()[2]
+
+      # Remote rsync
+      pattern = "(.+)@(.+):(.+)"
+      m = re.match(pattern, self.destination)
+      if not m == None:
+        self.user = m.groups()[0]
+        self.host = m.groups()[1]
+        self.destination = m.groups()[2]
 
 class Config:
   """Represents an YABM Configuration"""

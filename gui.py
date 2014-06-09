@@ -86,7 +86,7 @@ class ConfigWindow:
     self.source = StringVar()
     self.destination = StringVar()
     self.user = StringVar()
-    self.password = StringVar()
+    self.host = StringVar()
     self.minute = StringVar()
     self.hour = StringVar()
     self.dom = StringVar()
@@ -112,8 +112,8 @@ class ConfigWindow:
 
     self.source.set(config.command.source)
     self.destination.set(config.command.destination)
-    #self.user =
-    #self.password
+    self.user.set(config.command.user)
+    self.host.set(config.command.host) 
     self.minute.set(config.schedule.minute)
     self.hour.set(config.schedule.hour)
     self.dom.set(config.schedule.dom)
@@ -147,6 +147,8 @@ class ConfigWindow:
   def local_selected(self):
     self.entUser.config(state=DISABLED)
     self.entPass.config(state=DISABLED)
+    self.user.set("")
+    self.host.set("")
 
   def remote_selected(self):
     self.entUser.config(state=NORMAL)
@@ -162,6 +164,7 @@ class ConfigWindow:
   def delete(self):
     self.cm.remove(self.config)
     self.mainWindow.load_configs()
+    #self.window.destroy()
     InfoDialog(self.window, "Configuration deleted")
 
   def save(self):
@@ -170,14 +173,20 @@ class ConfigWindow:
     self.mainWindow.load_configs()
     InfoDialog(self.window, "Configuration saved")
 
+  def save_and_execute(self):
+    self.serialize()
+    self.cm.save(self.config)
+    self.config.execute()
+    self.mainWindow.load_configs()
+    InfoDialog(self.window, "Saved and executed")
 
   def serialize(self): 
     self.config.name = self.name.get()
     self.config.type = self.type.get()
     self.config.command.source = self.source.get()
     self.config.command.destination = self.destination.get()
-    #self.user = StringVar()
-    #self.password = StringVar()
+    self.config.command.user = self.user.get()
+    self.config.command.host = self.host.get()
     self.config.schedule.minute = self.minute.get()
     self.config.schedule.hour = self.hour.get()
     self.config.schedule.dom = self.dom.get()
@@ -188,15 +197,8 @@ class ConfigWindow:
     else:
       self.config.enabled = False
 
-    print self.config.enabled 
     self.config.mode = self.mode.get()
     self.config.command.options = self.cmd_options.get()
-
-  def save_and_execute(self):
-    self.serialize()
-    self.cm.save(self.config)
-    self.config.execute()
-    InfoDialog(self.window, "Execution finished")
 
   def create_widgets(self, parent):
     # Window    
@@ -228,12 +230,12 @@ class ConfigWindow:
     Entry(frmTop, textvariable=self.destination, width=35).grid(row=3, column=1, columnspan=2, sticky=W)
     Button(frmTop, text="...", command=self.select_destination).grid(row=3, column=3, sticky=W)
     
-    # User/Password widgets
+    # User/Host widgets
     Label(frmTop, width=12, text="User").grid(row=4, column=0, sticky=W)
     self.entUser = Entry(frmTop, textvariable=self.user, width=40)
     self.entUser.grid(row=4, column=1, columnspan=3, sticky=W)
-    Label(frmTop, width=12, text="Password").grid(row=5, column=0, sticky=W)
-    self.entPass = Entry(frmTop, textvariable=self.password, width=40)
+    Label(frmTop, width=12, text="Host").grid(row=5, column=0, sticky=W)
+    self.entPass = Entry(frmTop, textvariable=self.host, width=40)
     self.entPass.grid(row=5, column=1, columnspan=3, sticky=W)
 
     # Schedule Widgets

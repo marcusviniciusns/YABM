@@ -20,6 +20,7 @@ class CronManager:
 
   def load_all(self):
     self.configs = []
+
     for job in self.cron:
       metadata = job.comment
 
@@ -30,7 +31,7 @@ class CronManager:
         config.enabled = job.is_enabled()
         config.job = job 
         self.configs.append(config)
- 
+
   def save(self, config):
     if config == None:
       return
@@ -63,9 +64,9 @@ class CronManager:
 
     return True
 
-
   def remove_all(self):
     self.load_all()
-    for config in self.configs:
-      self.remove(config)
+    while len(self.configs) > 0:
+      self.remove(self.configs[0])
+
 

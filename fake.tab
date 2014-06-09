@@ -1,2 +1,2 @@
-# 15 1 2 3 4 rsync -a /Users/marvin/workspace/temp/source /Users/marvin/workspace/temp/destination # tool=YABM,name=Test Configuration,type=0,mode=0
-* * * * * rsync -abc /Users/marvin/workspace/temp/source /Users/marvin/workspace/temp/destination # tool=YABM,name=Test Configuration 2,type=0,mode=1
+# * * * * * rsync -a /Users/marvin/workspace/temp/source /Users/marvin/workspace/temp/destination # tool=YABM,name=Remote Backup,type=0,mode=0
+0 0,12 * 1,7 * rsync -a /Users/marvin/workspace/temp/source /Users/marvin/workspace/temp/destination # tool=YABM,name=Local Backup,type=0,mode=0
