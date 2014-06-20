@@ -1,9 +1,16 @@
+import sys
 from lib.crontab.crontab import CronTab
 from config import * 
 
 class CronManager:
   """Cron Manager"""
-  def __init__(self, dry_run=True):
+  def __init__(self):
+    if len(sys.argv) == 2 and sys.argv[1] == '--dry-run':
+      print "Running in dry mode. All changes saved to ./fake.tab"
+      dry_run = True
+    else:
+      dry_run = False
+
     if dry_run:
       self.cron = CronTab(tabfile='fake.tab')
     else:
